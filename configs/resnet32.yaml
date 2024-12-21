@@ -1,0 +1,37 @@
+# config to get 2:4 sparse ResNet-32 on ImageNet (SR-STE). Modify this file to get other sparse models.
+# Architecture
+arch: ResNet32
+
+# ===== Dataset ===== #
+data: DATA_PATH
+set: CIFAR10
+name: r32_24_spre
+
+# ===== Learning Rate Policy ======== #
+optimizer: sgd
+lr: 0.1
+lr_policy: cosine_lr
+warmup_length: 5
+
+# ===== Network training config ===== #
+epochs: 300
+weight_decay: 0.0005 # Change this according to reported numbers in appendix
+momentum: 0.9
+batch_size: 256
+label_smoothing: 0.1
+width_mult: 1
+
+# ===== Sparsity =========== #
+#pretrain: For ASP, this is required
+conv_type: SparseConv
+conv_rep_type: SparseRepConv
+rep_type: DynaRepConv
+N: 2
+M: 4
+
+bn_type: LearnedBatchNorm
+init: kaiming_normal
+mode: fan_in
+nonlinearity: relu
+# ===== Hardware setup ===== #
+workers: 20
